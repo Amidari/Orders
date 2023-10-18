@@ -3,12 +3,13 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 
 class Services
 {
 
-    public function index() {
-
+    public function index():Collection
+    {
         return Product::all();
     }
 
@@ -16,15 +17,13 @@ class Services
      * Сервис добавления склада.
      * @param array $data валидированные данные, максимум 255 символов.
      * @return bool
-     * @throws Exception
      */
 
     public function store(array $data):bool {
 
-        $table = new Product;
-        $table->name = $data['name'];
-        $table->price = $data['price'];
-        $table->save();
+        Product::firstOrCreate([
+            'name' => $data['name']
+        ], $data);
 
         return true;
 

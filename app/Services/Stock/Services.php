@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Services\Warehouses;
+namespace App\Services\Stock;
 
-use App\Models\Warehous;
+use App\Models\Stock;
 use Illuminate\Database\Eloquent\Collection;
 
 class Services
 {
 
-    public function index(): Collection
+    public function index():Collection
     {
-
-        return Warehous::all();
+        return Stock::all();
     }
 
     /**
@@ -20,39 +19,38 @@ class Services
      * @return bool
      */
 
-    public function store(array $data): bool
-    {
+    public function store(array $data):bool {
 
-        Warehous::firstOrCreate($data);
+        Stock::firstOrCreate($data);
+
         return true;
+
 
     }
 
-
     /**
      * Сервис изменения склада.
-     * @param Warehous $warehouse данные именяемого склада.
+     * @param Stock $stock данные именяемого склада.
      * @param array $data валидированные данные, максимум 255 символов.
      * @return bool
      */
-    public function update(array $data, Warehous $warehouse): bool
-    {
+    public function update(array $data, Stock $stock):bool {
 
-        $warehouse->update($data);
+        $stock->update($data);
         return true;
+
 
     }
 
     /**
      * Сервис удаления склада.
-     * @param Warehous $warehouse данные удаляемого склада.
+     * @param Stock $stock данные удаляемого склада.
      * @return bool
      */
-    public function destroy(Warehous $warehouse): bool
-    {
-        $warehouse->delete();
+    public function destroy(Stock $stock):bool{
+
+        $stock->delete();
         return true;
     }
-
 
 }

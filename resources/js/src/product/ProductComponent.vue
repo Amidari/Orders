@@ -1,10 +1,9 @@
 <script setup>
 
-import LeftBarComponent from './LeftBarComponent.vue';
 </script>
 
 <template>
-<LeftBarComponent />
+Product Component
 </template>
 
 <style scoped>
