@@ -47,12 +47,12 @@
                             </RouterLink>
                         </li>
                         <li class="nav-item">
-                            <a href="/" class="nav-link">
+                            <RouterLink to="/warehouse" class="nav-link text-white">
                                 <i class="nav-icon fas fa-solid fa-warehouse"></i>
                                 <p>
                                     Склады
                                 </p>
-                            </a>
+                            </RouterLink>
                         </li>
                     </ul>
                 </nav>

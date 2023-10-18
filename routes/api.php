@@ -13,7 +13,7 @@ Route::prefix('v1')->group(function (): void {
     Route::prefix('warehouses')->group(function (): void {
         Route::get('/', \App\Http\Controllers\Warehouses\IndexController::class);
         Route::post('/', \App\Http\Controllers\Warehouses\StoreController::class);
-        Route::post('/{warehouse}/update', \App\Http\Controllers\Warehouses\UpdateController::class);
+        Route::patch('/{warehouse}/update', \App\Http\Controllers\Warehouses\UpdateController::class);
         Route::post('/{warehouse}/delete', \App\Http\Controllers\Warehouses\DestroyController::class);
     });
     Route::prefix('product')->group(function (): void {
