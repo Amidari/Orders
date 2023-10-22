@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->bigIncrements('id');
             $table->string('customer','255');
             $table->timestamp('created_at');
-            $table->timestamp('completed_at');
+            $table->timestamp('completed_at')->nullable();
             $table->bigInteger('warehouse_id')->unsigned();
             $table->string('status','255');
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Order;
+namespace App\Http\Resources\Stock;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderResurce extends JsonResource
+class StockResurce extends JsonResource
 {
 
     /**
@@ -16,12 +16,9 @@ class OrderResurce extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'customer' => $this->customer,
+            'product_id' => $this->product_id,
             'warehouse' => $this->warehouse,
-            'created_at' => $this->created_at,
-            'completed_at' => $this->completed_at,
-            'status' => $this->status
+            'stock' => $this->stock
         ];
     }
 }

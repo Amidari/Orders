@@ -34,7 +34,7 @@
                             <router-link to="/product" class="nav-link text-white">
                                 <i class="nav-icon fab fa-product-hunt"></i>
                                 <p>
-                                    Продукты
+                                    Товары
                                 </p>
                             </router-link>
                         </li>

@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers\Stock;
 
+use App\Http\Resources\Stock\StockResurce;
 use App\Models\Stock;
-use Illuminate\Database\Eloquent\Collection;
 
 class IndexController extends BaseController
 {
-    public function __invoke():Collection
+    public function __invoke()
     {
-        return Stock::all();
+        $stock = Stock::select(
+            'product_id',
+            'warehouses.name as warehouse',
+            'stock')
+            ->join('warehouses', 'warehouses.id', '=', 'stocks.warehouse_id')
+            ->get();
+
+        return StockResurce::collection($stock);
     }
 }

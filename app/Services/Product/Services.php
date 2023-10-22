@@ -49,10 +49,10 @@ class Services
      * @param Product $product данные удаляемого склада.
      * @return bool
      */
-    public function destroy(Product $product):bool{
-
+    public function destroy(Product $product):void
+    {
         $product->delete();
-        return true;
+
     }
 
 }

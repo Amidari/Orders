@@ -13,7 +13,7 @@ Route::prefix('v1')->group(function (): void {
     Route::prefix('warehouses')->group(function (): void {
         Route::get('/', \App\Http\Controllers\Warehouses\IndexController::class);
         Route::post('/', \App\Http\Controllers\Warehouses\StoreController::class);
-        Route::patch('/{warehouse}/update', \App\Http\Controllers\Warehouses\UpdateController::class);
+        Route::post('/{warehouse}/update', \App\Http\Controllers\Warehouses\UpdateController::class);
         Route::post('/{warehouse}/delete', \App\Http\Controllers\Warehouses\DestroyController::class);
     });
     Route::prefix('product')->group(function (): void {
@@ -29,6 +29,10 @@ Route::prefix('v1')->group(function (): void {
     Route::prefix('order')->group(function (): void {
         Route::get('/', \App\Http\Controllers\Order\IndexController::class);
         Route::get('/{order}/show', \App\Http\Controllers\Order\ShowController::class);
+        Route::post('/create', \App\Http\Controllers\Order\CreateController::class);
+        Route::post('/addProduct', \App\Http\Controllers\Order\AddProductController::class);
+        Route::post('/deleteProduct', \App\Http\Controllers\Order\DeleteProductController::class);
+        Route::post('/refresh', \App\Http\Controllers\Order\RefreshController::class);
     });
 
 }

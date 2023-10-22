@@ -12,6 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stocks', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('warehouse_id')->constrained('warehouses');
             $table->integer('stock');
