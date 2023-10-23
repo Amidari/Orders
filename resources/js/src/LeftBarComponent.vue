@@ -64,14 +64,13 @@
                         </li>
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <div class="container">
             <RouterView />
+            </div>
         </div>
         <aside class="control-sidebar control-sidebar-dark">
         </aside>
@@ -86,8 +85,6 @@ export default {
 </script>
 
 <script setup>
-
-import MainComponent from "@/src/MainComponent.vue";
 
 </script>
 

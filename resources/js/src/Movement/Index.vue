@@ -4,41 +4,54 @@
 
 <template>
     <div class="row">
-        <h1 class="mt-3 ml-5">Движение товаров</h1>
+        <div class="col-12">
+            <h1 class="mt-3 ml-5 text-center">Движение товаров</h1>
+        </div>
     </div>
 
 
     <div class="row ml-5">
-        <div class="mb-3 w-25">
+        <div class="col-4">
             <label for="customer">Выберите склад</label>
             <select v-model="warehouse_id" class="form-control">
                 <option v-bind:value="null">Все</option>
                 <option v-for="warehouse in warehouses" v-bind:value="warehouse.id" > {{warehouse.name}}</option>
             </select>
+        </div>
+        <div class="col-4">
             <label for="customer">Выберите статус</label>
             <select v-model="status" class="form-control">
                 <option v-bind:value="null">Все</option>
                 <option value="Списание" > Списание</option>
                 <option value="Поступление" > Поступление</option>
             </select>
+        </div>
+        <div class="col-4">
             <label for="customer">Выберите продукт</label>
             <select v-model="product_id" class="form-control">
                 <option v-bind:value="null">Все</option>
                 <option v-for="product in allProducts" v-bind:value="product.id" > {{product.name}}</option>
 
             </select>
+        </div>
+        <div class="col-4">
             <label for="paginate">Выберите кол-во записей</label>
             <select v-model="paginate" class="form-control"  id="paginate">
                 <option value="10" > 10</option>
                 <option value="20" > 20</option>
                 <option value="30" > 30</option>
             </select>
+        </div>
+        <div class="col-4">
             <label for="date">Выберите дату</label>
             <input type="date" v-model="dateMovement" class="form-control"  id="date">
 
 
-
-            <a href="#" @click.prevent="getMovement(1)" class="btn btn-success mt-3">Применить</a>
+        </div>
+        <div class="col-4">
+            <div class="text-center mt-2">
+            <a href="#" @click.prevent="getMovement(1)" class="btn btn-success mt-3 ">Применить</a>
+            </div>
         </div>
     </div>
     <div class="row ml-2">

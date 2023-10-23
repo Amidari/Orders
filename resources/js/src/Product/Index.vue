@@ -4,7 +4,7 @@
 
 <template>
     <div class="row">
-    <h1 class="col mt-3">Товары</h1>
+            <h1 class="col mt-3 text-center">Товары</h1>
     <table class="table mt-3">
         <thead>
         <tr>
@@ -13,7 +13,7 @@
             <th scope="col">Цена</th>
             <th scope="col">Остатки</th>
             <th scope="col">Именить</th>
-            <th scope="col">Удалить</th>
+<!--            <th scope="col">Удалить</th>-->
         </tr>
         </thead>
         <tbody>
@@ -24,7 +24,7 @@
                 <td>{{ product.price}}</td>
                 <td><a href="#" @click.prevent="stockProduct(product.id)" class="btn btn-secondary">Остатки</a></td>
                 <td><a href="#" @click.prevent="changeEditProductId(product.id, product.name, product.price)" class="btn btn-success">Именить</a></td>
-                <td><a href="#" @click.prevent="deleteProduct(product.id)" class="btn btn-danger">Удалить</a></td>
+<!--                <td><a href="#" @click.prevent="deleteProduct(product.id)" class="btn btn-danger">Удалить</a></td>-->
             </tr>
             <tr :class="isEdit(product.id)? '' : 'd-none'">
                 <th>{{ product.id }}</th>
@@ -36,16 +36,14 @@
                 <th></th>
                 <th >Склад</th>
                 <th>Остаток</th>
-                <th colspan="3"><a href="#" @click.prevent="stockProduct(null)" class="btn btn-info">Свернуть</a></th>
+                <th colspan="2"><a href="#" @click.prevent="stockProduct(null)" class="btn btn-info">Свернуть</a></th>
 
             </tr>
             <template v-for="stock in stocks">
             <tr :class="isStock(product.id)? '' : 'd-none'" v-if="product.id === stock.product_id" class="table-secondary">
                 <th></th>
                 <td>{{ stock.warehouse }}</td>
-                <td colspan="4">{{ stock.stock }}</td>
-
-
+                <td colspan="3">{{ stock.stock }}</td>
             </tr>
             </template>
         </template>

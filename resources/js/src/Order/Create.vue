@@ -3,8 +3,8 @@
 </script>
 
 <template>
-    <div class="row ml-3">
-        <h1 class="mt-3 ml-2">Создать заказ</h1>
+    <div class="row">
+        <h1 class="mt-3 ml-5">Создать заказ</h1>
     </div>
     <div class="w-25 ml-5">
         <div class="mb-3">
