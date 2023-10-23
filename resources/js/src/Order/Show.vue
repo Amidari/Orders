@@ -3,10 +3,11 @@
 </script>
 
 <template>
+    <div v-if="orders != null" >
     <div class="row ml-3">
         <h1 class="mt-3 ml-2">Карточка заказа</h1>
     </div>
-        <div class="w-25 ml-5" v-if="orders != null">
+        <div class="w-25 ml-5">
             <div class="mb-3">
                 <label for="index">Номер заказа</label>
                 <input type="text" class="form-control" id="index" v-model="orders.id" disabled>
@@ -42,7 +43,7 @@
             </tr>
             </thead>
             <tbody>
-            <template v-if="orders != null" v-for="product in orders.products ">
+            <template v-for="product in orders.products ">
 
                 <tr>
                     <td>{{ product.name }}</td>
@@ -50,14 +51,14 @@
                     <template v-for="value in orders.stocks" >
                     <td v-if="product.id === value.product_id">{{value.stock}}</td>
                     </template>
-                    <td><a href="#" @click.prevent="deleteProduct(product.id, product.count)" class="btn btn-danger">Удалить</a></td>
+                    <td><a href="#" @click.prevent="deleteProduct(product.id, product.count)" class="btn btn-danger" :class="orders.status !== 'completed'? '' : 'd-none'">Удалить</a></td>
                 </tr>
 
             </template>
             </tbody>
         </table>
     </div>
-    <div class="row ml-2 mt-4">
+    <div class="row ml-2 mt-4" :class="orders.status !== 'active'? 'd-none' : ''">
         <label>Добавить продукт</label>
         <table class="table">
             <thead>
@@ -70,7 +71,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr >
                 <td><select v-model="addProduct" class="form-control">
                     <option disabled value="">Выберите один из вариантов</option>
                     <option v-for="product in allProducts" v-bind:value="product.id" > {{product.name}}</option>
@@ -84,7 +85,7 @@
         </table>
 
     </div>
-
+    </div>
 </template>
 
 <script>

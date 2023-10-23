@@ -2,31 +2,52 @@
 
 namespace App\Services\Order;
 
+use App\Models\Movement;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product;
 use App\Models\Stock;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class Services
 {
-
-    public function index():Collection
+    use MovementStock;
+    //Получение всех заказов
+    public function index($data)
     {
-        return Order::select(
+        $query = Order::query();
+
+        $query->select(
             'orders.id as id',
             'customer',
             'warehouses.name as warehouse',
+            'warehouses.id as warehouses_id',
             'created_at',
             'completed_at',
             'status'
-        )->
-        join('warehouses','warehouses.id', '=', 'orders.warehouse_id')
-            ->orderBy('orders.id', 'desc')
-            ->get();
+        )
+            ->join('warehouses','warehouses.id', '=', 'orders.warehouse_id')
+            ->orderBy('orders.id', 'desc');
+
+
+
+        if(isset($data['warehouse_id'])){
+            $query->where('warehouse_id',$data['warehouse_id']);
+        }
+        if(isset($data['customer'])){
+            $query->where('customer', 'like',"%{$data['customer']}%");
+        }
+        if(isset($data['status'])){
+            $query->where('status',$data['status']);
+        }
+        if(isset($data['paginate'])){
+            $query->paginate($data['paginate']);
+        }
+
+
+        $orders = $query->get();
+        return $orders;
     }
 
+    //Получение конкретного заказа
     public function show(Order $order)
     {
 
@@ -37,7 +58,7 @@ class Services
             'products.name as name',
             'count')
             ->join('products', 'order_items.product_id', '=', 'products.id')
-            ->where('order_id', $order->id)
+            ->where('order_id', $order['id'])
             ->get();
 
         $stocks = Stock::query()
@@ -51,7 +72,7 @@ class Services
 
         return $orders;
     }
-
+    //Добавление продукта в заказ
     public function store($data):bool
     {
 
@@ -73,9 +94,14 @@ class Services
         $orderItem->count = $data['count'];
         $orderItem->save();
 
+        $this->writeStock($data['product_id'],$data['warehouse_id'], $data['count']);
+
+
+
         return true;
     }
 
+    //Удаление продукта из заказа
     public function destroyProduct($data):bool
     {
 
@@ -92,9 +118,13 @@ class Services
             ->first();
 
         $orderItem->delete();
+
+        $this->writeStock($data['product_id'],$data['warehouse_id'], $data['count']);
+
         return true;
     }
 
+    //Обновление имени в заказе
     public function refresh($data):bool
     {
         $order = Order::find($data->order_id);
@@ -102,6 +132,8 @@ class Services
         $order->save();
         return true;
     }
+
+    //Создание нового заказа
     public function create($data):bool
     {
         $order = new Order();
@@ -111,6 +143,99 @@ class Services
         $order->warehouse_id = $data['warehouse_id'];
         $order->status = 'active';
         $order->save();
+        return true;
+    }
+    //Возобновить заказ
+    public function active($data):bool
+    {
+
+        $items = OrderItem::select(
+            'products.id as id',
+            'products.name as name',
+            'count')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->where('order_id', $data->id)
+            ->get();
+
+        //Если заказ пустой меняем статус
+        if ($items->count()<1){
+            $data->status = 'active';
+            $data->save();
+            return true;
+        }
+        $stocks = Stock::query()
+            ->select('id','product_id', 'stock')
+            ->where('warehouse_id', $data['warehouse_id'])
+            ->get();
+
+        //Проверка на наличие на складе
+        foreach ($items as $item){
+            foreach ($stocks as $stock){
+                if($item->id === $stock->product_id&&$item->count>$stock->stock){
+                    return false;
+                }
+            }
+        }
+        //Снимаем со склада
+        foreach ($items as $item){
+            foreach ($stocks as $stock){
+                if($item->id === $stock->product_id){
+                    $stock->stock = $stock->stock-$item->count;
+                    $stock->save();
+                    $this->writeStock($item->id, $data['warehouse_id'], $item->count);
+                }
+            }
+        }
+        $data->status = 'active';
+        $data->save();
+
+        return true;
+    }
+    //Отмена заказа
+    public function canceled($data):bool
+    {
+
+        $items = OrderItem::select(
+            'products.id as id',
+            'products.name as name',
+            'count')
+            ->join('products', 'order_items.product_id', '=', 'products.id')
+            ->where('order_id', $data->id)
+            ->get();
+        //Если заказ пустой меняем статус
+        if ($items->count()<1){
+            $data->status = 'canceled';
+            $data->save();
+            return true;
+        }
+        //Иначе возвращаем остатки
+
+
+        $stocks = Stock::query()
+            ->select('id','product_id', 'stock')
+            ->where('warehouse_id', $data['warehouse_id'])
+            ->get();
+
+        foreach ($items as $item){
+            foreach ($stocks as $stock){
+                if($item->id === $stock->product_id){
+                    $stock->stock = $stock->stock+$item->count;
+                    $stock->save();
+                    $this->creditingStock($item->id, $data['warehouse_id'], $item->count);
+                }
+            }
+        }
+        $data->status = 'canceled';
+        $data->save();
+
+        return true;
+    }
+    public function completed($data):bool
+    {
+
+        $data->completed_at = date("Y-m-d H:i:s");
+        $data->status = 'completed';
+        $data->save();
         return true;
     }
 

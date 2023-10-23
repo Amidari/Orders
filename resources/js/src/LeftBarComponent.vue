@@ -54,6 +54,14 @@
                                 </p>
                             </RouterLink>
                         </li>
+                        <li class="nav-item">
+                            <RouterLink to="/movement" class="nav-link text-white">
+                                <i class="nav-icon fas fa-expand-arrows-alt"></i>
+                                <p>
+                                    Движение товаров
+                                </p>
+                            </RouterLink>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

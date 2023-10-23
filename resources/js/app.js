@@ -13,6 +13,10 @@ const router = createRouter({
             path: '/product', component: () => import("./src/Product/Index.vue"),
         },
         {
+            name: 'movement.index',
+            path: '/movement', component: () => import("./src/Movement/Index.vue"),
+        },
+        {
             name: 'order.index',
             path: '/order', component: () => import("./src/Order/Index.vue"),
         },
@@ -20,6 +24,7 @@ const router = createRouter({
             name: 'order.show',
             path: '/order/show/:Id', component: () => import("./src/Order/Show.vue"),
         },
+
         {
             name: 'order.create',
             path: '/order/create/', component: () => import("./src/Order/Create.vue"),
