@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function (): void {
         Route::post('/', \App\Http\Controllers\Product\StoreController::class);
     });
     Route::prefix('order')->group(function (): void {
-        Route::get('/', \App\Http\Controllers\Order\IndexController::class);
+        Route::post('/', \App\Http\Controllers\Order\IndexController::class);
         Route::get('/{order}/show', \App\Http\Controllers\Order\ShowController::class);
         Route::get('/{order}/completed', \App\Http\Controllers\Order\Status\CompletedController::class);
         Route::get('/{order}/canceled', \App\Http\Controllers\Order\Status\CanceledController::class);

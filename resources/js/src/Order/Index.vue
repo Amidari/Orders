@@ -6,12 +6,12 @@
     <div class="row ml-5">
         <div class="mb-3 w-25">
             <label for="warehouse">Выберите склад</label>
-            <select v-model="warehouse_id" class="form-control"  id="warehouse" @click="getOrder">
+            <select v-model="warehouse_id" class="form-control"  id="warehouse">
                 <option v-bind:value="null">Все</option>
                 <option v-for="warehouse in warehouses" v-bind:value="warehouse.id" > {{warehouse.name}}</option>
             </select>
             <label for="status">Выберите статус</label>
-            <select v-model="status" class="form-control"  id="status" @click="getOrder">
+            <select v-model="status" class="form-control"  id="status">
                 <option v-bind:value="null">Все</option>
                 <option value="active" > Активный</option>
                 <option value="canceled" > Отменен</option>
@@ -19,14 +19,14 @@
             </select>
 
             <label for="paginate">Выберите кол-во записей</label>
-            <select v-model="paginate" class="form-control"  id="paginate" @click="getOrder">
-                <option v-bind:value="null">Все</option>
+            <select v-model="paginate" class="form-control"  id="paginate">
                 <option value="10" > 10</option>
                 <option value="20" > 20</option>
                 <option value="30" > 30</option>
             </select>
-<!--            <label for="customer">Выберите клиента</label>-->
-<!--            <input type="text" class="form-control" id="customer" v-model="customer" @click="getOrder">-->
+
+            <a href="#" @click.prevent="getOrder(1)" class="btn btn-success mt-3">Применить</a>
+
         </div>
     </div>
     <div class="row ml-2">
@@ -52,7 +52,7 @@
                     <td>{{ order.warehouse }}</td>
                     <td>{{ order.created_at }}</td>
                     <td>{{ order.completed_at }}</td>
-                    <td>{{ order.status }}</td>
+                    <td>{{ order.status_name }}</td>
                     <td><router-link :to="{ path: `order/show/${order.id}`}" class="btn btn-primary">Подробнее</router-link></td>
                     <th :class="order.status === 'active'? '' : 'd-none'"><a href="#" @click.prevent="canceledOrder(order.id)" class="btn btn-danger">Отмена закза</a></th>
                     <th :class="order.status === 'canceled'? '' : 'd-none'"><a href="#" @click.prevent="activeOrder(order.id)" class="btn btn-warning">Возобновить заказ</a></th>
@@ -62,6 +62,42 @@
             </template>
             </tbody>
         </table>
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center wow fadeInUp animated">
+            <ul class="pagination">
+                <li v-if="pagination.current_page !==1" class="page-item">
+                    <a @click.prevent="getOrder(pagination.current_page-1)" class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li v-for="link in pagination.links" class="page-item">
+                    <template v-if="Number(link.label) &&
+                        (pagination.current_page - link.label < 2 &&
+                        pagination.current_page - link.label > -2) ||
+                        Number(link.label)===1 || Number(link.label)===pagination.last_page
+                        ">
+                        <a @click.prevent="getOrder(link.label)" :class="link.active? 'active': ''" class="page-link"
+                           href="#">{{ link.label }}</a>
+                    </template>
+                    <template v-if="Number(link.label) &&
+                        pagination.current_page!==3 &&
+                        (pagination.current_page - link.label === 2) ||
+                        Number(link.label) &&
+                        pagination.current_page!==pagination.last_page - 2 &&
+                        (pagination.current_page - link.label === -2)">
+                        <a>...</a>
+                    </template>
+                </li>
+                <li v-if="pagination.current_page !== pagination.last_page" class="page-item">
+                    <a @click.prevent="getOrder(pagination.current_page+1)" class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -79,11 +115,9 @@ export default {
             warehouse: null,
             warehouses: null,
             warehouse_id: null,
-            created_at: null,
-            completed_at: null,
             status: null,
-            paginate:null,
-            url: 'api/v1/order?',
+            paginate: 10,
+            pagination:[],
 
         }
     },
@@ -99,22 +133,18 @@ export default {
                     this.warehouses = res.data.data;
                 })
         },
-        getOrder() {
-            if(this.warehouse_id!==null){
-                this.url = this.url + `warehouse_id=${this.warehouse_id}&`
-            }
-            if(this.status!==null){
-                this.url = this.url + `status=${this.status}&`
-            }
-            if(this.paginate!==null){
-                this.url = this.url + `paginate=${this.paginate}&`
-            }
+        getOrder(page=1) {
+            axios.post('/api/v1/order', {
+                'warehouse_id': this.warehouse_id,
+                'status':this.status,
+                'paginate':this.paginate,
+                'page':page,
 
-            axios.get(`${this.url}`)
+            })
                 .then(res => {
                     this.orders = res.data.data;
-                    console.log(this.url);
-                    this.url = 'api/v1/order?';
+                    this.pagination = res.data.meta
+                    console.log(res);
                 })
         },
         completedOrder(id){

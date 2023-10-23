@@ -33,7 +33,6 @@ class Services
             $query->where('status',$data['status']);
         }
         if(isset($data['date'])){
-//            dd($data['date']);
             $query->whereDate('created_at',date('Y-m-d',strtotime($data['date'])));
         }
 

@@ -13,9 +13,9 @@ class Services
     //Получение всех заказов
     public function index($data)
     {
-        $query = Order::query();
+        $query = Order::
 
-        $query->select(
+        select(
             'orders.id as id',
             'customer',
             'warehouses.name as warehouse',
@@ -23,9 +23,9 @@ class Services
             'created_at',
             'completed_at',
             'status'
-        )
-            ->join('warehouses','warehouses.id', '=', 'orders.warehouse_id')
-            ->orderBy('orders.id', 'desc');
+        );
+           $query->join('warehouses','warehouses.id', '=', 'orders.warehouse_id');
+
 
 
 
@@ -38,12 +38,14 @@ class Services
         if(isset($data['status'])){
             $query->where('status',$data['status']);
         }
+        $query->orderBy('orders.id', 'desc');
+
         if(isset($data['paginate'])){
-            $query->paginate($data['paginate']);
+            $orders = $query->paginate($data['paginate'], ['*'], 'page', $data['page']);
         }
-
-
-        $orders = $query->get();
+        else{
+            $orders = $query->get();
+        }
 
         return $orders;
     }

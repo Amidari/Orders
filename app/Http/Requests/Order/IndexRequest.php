@@ -22,10 +22,11 @@ class IndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'customer' => 'string',
-            'warehouse_id' => 'integer',
-            'status' => 'string',
-            'paginate' => 'integer',
+            'customer' => 'nullable|string',
+            'warehouse_id' => 'nullable|integer',
+            'status' => 'nullable|string',
+            'paginate' => 'nullable|integer',
+            'page' => 'required|integer',
         ];
     }
 

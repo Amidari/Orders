@@ -15,13 +15,21 @@ class OrderResurce extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $status_name = [
+            'active' => 'В работе',
+            'completed' =>'Завершен',
+            'canceled' => 'Отменен',
+        ];
+
         return [
             'id' => $this->id,
             'customer' => $this->customer,
             'warehouse' => $this->warehouse,
-            'created_at' => $this->created_at,
-            'completed_at' => $this->completed_at,
-            'status' => $this->status
+            'created_at' => date('d.m.Y', strtotime($this->created_at)),
+            'completed_at' => date('d.m.Y', strtotime($this->completed_at)),
+            'status' => $this->status,
+            'status_name' =>$status_name[$this->status],
+
         ];
     }
 }

@@ -38,7 +38,7 @@
 
 
 
-            <a href="#" @click.prevent="getMovement" class="btn btn-success mt-3">Применить</a>
+            <a href="#" @click.prevent="getMovement(1)" class="btn btn-success mt-3">Применить</a>
         </div>
     </div>
     <div class="row ml-2">
@@ -134,13 +134,12 @@ export default {
     },
     methods: {
         getMovement(page=1) {
-            page? page=1 : '';
             axios.post('/api/v1/movements' , {
                 'warehouse_id':this.warehouse_id,
                 'status':this.status,
                 'product_id':this.product_id,
-                'paginate':this.paginate,
                 'date': this.dateMovement,
+                'paginate':this.paginate,
                 'page':page,
             })
                 .then(res => {

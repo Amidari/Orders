@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class IndexController extends BaseController
 {
-    public function __invoke(IndexRequest $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function __invoke(IndexRequest $request)
     {
 
         $data=$request->validated();
