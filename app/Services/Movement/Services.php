@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Collection;
 class Services
 {
 
-    public function index($data):Collection
+    public function index($data)
     {
-        $query = Movement::query();
-        $query->select(
+
+        $query = Movement::
+        select(
             'movements.id',
             'status',
             'move',
@@ -31,11 +32,22 @@ class Services
         if(isset($data['status'])){
             $query->where('status',$data['status']);
         }
-        if(isset($data['paginate'])){
-            $query->paginate($data['paginate']);
+        if(isset($data['date'])){
+//            dd($data['date']);
+            $query->whereDate('created_at',date('Y-m-d',strtotime($data['date'])));
         }
+
         $query->orderBy('movements.id', 'desc');
-        $movement = $query->get();
+
+        if(isset($data['paginate'])){
+            $movement = $query->paginate($data['paginate'], ['*'], 'page', $data['page']);
+        }
+        else{
+            $movement = $query->get();
+        }
+
+
+
         return $movement;
     }
 

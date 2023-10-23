@@ -44,6 +44,7 @@ class Services
 
 
         $orders = $query->get();
+
         return $orders;
     }
 

@@ -22,12 +22,14 @@ class IndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'integer',
-            'warehouse_id' => 'integer',
-            'status' => 'string',
-            'paginate' => 'integer',
+            'product_id' => 'nullable|integer',
+            'warehouse_id' => 'nullable|integer',
+            'status' => 'nullable|string',
+            'paginate' => 'nullable|integer',
             'created_at' => '',
             'updated_at' => '',
+            'page' => 'required|integer',
+            'date' => 'nullable|string',
         ];
     }
 

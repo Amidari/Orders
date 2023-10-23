@@ -38,7 +38,7 @@ Route::prefix('v1')->group(function (): void {
         Route::post('/refresh', \App\Http\Controllers\Order\RefreshController::class);
     });
     Route::prefix('movements')->group(function (): void {
-        Route::get('/', \App\Http\Controllers\Movement\IndexController::class);
+        Route::post('/', \App\Http\Controllers\Movement\IndexController::class);
     });
 
 }

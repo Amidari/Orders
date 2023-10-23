@@ -11,29 +11,34 @@
     <div class="row ml-5">
         <div class="mb-3 w-25">
             <label for="customer">Выберите склад</label>
-            <select v-model="warehouse_id" class="form-control" @click="getMovement">
+            <select v-model="warehouse_id" class="form-control">
                 <option v-bind:value="null">Все</option>
                 <option v-for="warehouse in warehouses" v-bind:value="warehouse.id" > {{warehouse.name}}</option>
             </select>
             <label for="customer">Выберите статус</label>
-            <select v-model="status" class="form-control" @click="getMovement">
+            <select v-model="status" class="form-control">
                 <option v-bind:value="null">Все</option>
                 <option value="Списание" > Списание</option>
                 <option value="Поступление" > Поступление</option>
             </select>
             <label for="customer">Выберите продукт</label>
-            <select v-model="product_id" class="form-control" @click="getMovement">
+            <select v-model="product_id" class="form-control">
                 <option v-bind:value="null">Все</option>
                 <option v-for="product in allProducts" v-bind:value="product.id" > {{product.name}}</option>
 
             </select>
             <label for="paginate">Выберите кол-во записей</label>
-            <select v-model="paginate" class="form-control"  id="paginate" @click="getMovement">
-                <option v-bind:value="null">Все</option>
+            <select v-model="paginate" class="form-control"  id="paginate">
                 <option value="10" > 10</option>
                 <option value="20" > 20</option>
                 <option value="30" > 30</option>
             </select>
+            <label for="date">Выберите дату</label>
+            <input type="date" v-model="dateMovement" class="form-control"  id="date">
+
+
+
+            <a href="#" @click.prevent="getMovement" class="btn btn-success mt-3">Применить</a>
         </div>
     </div>
     <div class="row ml-2">
@@ -62,6 +67,42 @@
             </tbody>
         </table>
     </div>
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center wow fadeInUp animated">
+            <ul class="pagination">
+                <li v-if="pagination.current_page !==1" class="page-item">
+                    <a @click.prevent="getMovement(pagination.current_page-1)" class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li v-for="link in pagination.links" class="page-item">
+                    <template v-if="Number(link.label) &&
+                        (pagination.current_page - link.label < 2 &&
+                        pagination.current_page - link.label > -2) ||
+                        Number(link.label)===1 || Number(link.label)===pagination.last_page
+                        ">
+                        <a @click.prevent="getMovement(link.label)" :class="link.active? 'active': ''" class="page-link"
+                           href="#">{{ link.label }}</a>
+                    </template>
+                    <template v-if="Number(link.label) &&
+                        pagination.current_page!==3 &&
+                        (pagination.current_page - link.label === 2) ||
+                        Number(link.label) &&
+                        pagination.current_page!==pagination.last_page - 2 &&
+                        (pagination.current_page - link.label === -2)">
+                        <a>...</a>
+                    </template>
+                </li>
+                <li v-if="pagination.current_page !== pagination.last_page" class="page-item">
+                    <a @click.prevent="getMovement(pagination.current_page+1)" class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <br>
     <br>
 </template>
@@ -74,14 +115,15 @@ export default {
 
     data() {
         return {
-            movements: null,
+            movements: [],
             status: null,
             allProducts:null,
             product_id: null,
             warehouses: null,
             warehouse_id: null,
-            paginate: null,
-            url: 'api/v1/movements?',
+            paginate: 10,
+            pagination:[],
+            dateMovement: null,
 
         }
     },
@@ -91,23 +133,20 @@ export default {
         this.getAllProduct();
     },
     methods: {
-        getMovement() {
-            if(this.warehouse_id!==null){
-                this.url = this.url + `warehouse_id=${this.warehouse_id}&`
-            }
-            if(this.status!==null){
-                this.url = this.url + `status=${this.status}&`
-            }
-            if(this.product_id!==null){
-                this.url = this.url + `product_id=${this.product_id}&`
-            }
-            if(this.paginate!==null){
-                this.url = this.url + `paginate=${this.paginate}&`
-            }
-            axios.get(`${this.url}`)
+        getMovement(page=1) {
+            page? page=1 : '';
+            axios.post('/api/v1/movements' , {
+                'warehouse_id':this.warehouse_id,
+                'status':this.status,
+                'product_id':this.product_id,
+                'paginate':this.paginate,
+                'date': this.dateMovement,
+                'page':page,
+            })
                 .then(res => {
-                    this.movements = res.data.data;
-                    this.url = 'api/v1/movements?';
+                    this.movements = res.data.data
+                    this.pagination = res.data.meta
+                    console.log(res);
                 })
         },
         getWarehouse() {
