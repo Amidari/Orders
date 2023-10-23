@@ -6,12 +6,15 @@ use App\Http\Requests\Warehous\StoreRequest;
 
 class StoreController extends BaseController
 {
-
-    public function __invoke(StoreRequest $request):bool
+    /**
+     * Добавление склада
+     * @param StoreRequest $request
+     * @return bool
+     */
+    public function __invoke(StoreRequest $request): bool
     {
         $data = $request->validated();
 
-       return $this->service->store($data);
-
+        return $this->service->store($data);
     }
 }

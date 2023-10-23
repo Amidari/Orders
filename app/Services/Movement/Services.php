@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Services
 {
-
-    public function index($data)
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function index($data):mixed
     {
 
         $query = Movement::
@@ -44,8 +47,6 @@ class Services
         else{
             $movement = $query->get();
         }
-
-
 
         return $movement;
     }

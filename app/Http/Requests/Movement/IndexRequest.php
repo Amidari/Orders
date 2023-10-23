@@ -33,8 +33,4 @@ class IndexRequest extends FormRequest
         ];
     }
 
-//    protected function failedValidation(Validator $validator)
-//    {
-//        throw (new \Illuminate\Validation\ValidationException($validator))->errorBag($this->errorBag)->status(Response::HTTP_FORBIDDEN);
-//    }
 }

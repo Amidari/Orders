@@ -7,8 +7,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Services
 {
-
-    public function index():Collection
+    /**
+     * Получение всех остатков
+     * @return Collection
+     */
+    public function index(): Collection
     {
         return Stock::all();
     }
@@ -18,14 +21,10 @@ class Services
      * @param array $data валидированные данные, максимум 255 символов.
      * @return bool
      */
-
-    public function store(array $data):bool {
-
+    public function store(array $data): bool
+    {
         Stock::firstOrCreate($data);
-
         return true;
-
-
     }
 
     /**
@@ -34,12 +33,10 @@ class Services
      * @param array $data валидированные данные, максимум 255 символов.
      * @return bool
      */
-    public function update(array $data, Stock $stock):bool {
-
+    public function update(array $data, Stock $stock): bool
+    {
         $stock->update($data);
         return true;
-
-
     }
 
     /**
@@ -47,8 +44,8 @@ class Services
      * @param Stock $stock данные удаляемого склада.
      * @return bool
      */
-    public function destroy(Stock $stock):bool{
-
+    public function destroy(Stock $stock): bool
+    {
         $stock->delete();
         return true;
     }

@@ -28,9 +28,4 @@ class DeleteProductRequest extends FormRequest
             'warehouse_id' => 'required|integer',
         ];
     }
-
-//    protected function failedValidation(Validator $validator)
-//    {
-//        throw (new \Illuminate\Validation\ValidationException($validator))->errorBag($this->errorBag)->status(Response::HTTP_FORBIDDEN);
-//    }
 }

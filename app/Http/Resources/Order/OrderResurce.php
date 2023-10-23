@@ -26,7 +26,7 @@ class OrderResurce extends JsonResource
             'customer' => $this->customer,
             'warehouse' => $this->warehouse,
             'created_at' => date('d.m.Y', strtotime($this->created_at)),
-            'completed_at' => date('d.m.Y', strtotime($this->completed_at)),
+            'completed_at' => $this->completed_at!=null?$this->completed_at=date('d.m.Y', strtotime($this->completed_at)): null,
             'status' => $this->status,
             'status_name' =>$status_name[$this->status],
 

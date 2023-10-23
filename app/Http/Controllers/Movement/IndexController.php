@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Movement;
 
 use App\Http\Requests\Movement\IndexRequest;
 use App\Http\Resources\Movement\MovementResurce;
-use App\Models\Movement;
+use Illuminate\Http\JsonResponse;
 
 
 class IndexController extends BaseController
 {
-    public function __invoke(IndexRequest $request)
+    /**
+     * @param IndexRequest $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function __invoke(IndexRequest $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
 
         $data=$request->validated();

@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CreateController extends BaseController
 {
+    /**
+     * @param StoreRequest $request
+     * @return bool
+     */
     public function __invoke(StoreRequest $request):bool
     {
 

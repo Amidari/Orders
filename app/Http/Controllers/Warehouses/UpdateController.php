@@ -8,6 +8,12 @@ use App\Models\Warehous;
 
 class UpdateController extends BaseController
 {
+    /**
+     * Обновление склада
+     * @param UpdateRequest $request
+     * @param Warehous $warehouse
+     * @return bool
+     */
     public function __invoke(UpdateRequest $request, Warehous $warehouse):bool
     {
         $data = $request->validated();

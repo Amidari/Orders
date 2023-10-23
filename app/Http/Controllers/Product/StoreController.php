@@ -6,12 +6,14 @@ use App\Http\Requests\Product\StoreRequest;
 
 class StoreController extends BaseController
 {
-
-    public function __invoke(StoreRequest $request):bool
+    /**
+     * @param StoreRequest $request
+     * @return bool
+     */
+    public function __invoke(StoreRequest $request): bool
     {
         $data = $request->validated();
 
-       return $this->service->store($data);
-
+        return $this->service->store($data);
     }
 }

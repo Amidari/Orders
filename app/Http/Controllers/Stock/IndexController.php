@@ -7,15 +7,18 @@ use App\Models\Stock;
 
 class IndexController extends BaseController
 {
-    public function __invoke()
+    /**
+     * Получение продуктов с остатками по складам
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function __invoke(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $stock = Stock::select(
+
+        return StockResurce::collection(Stock::select(
             'product_id',
             'warehouses.name as warehouse',
             'stock')
             ->join('warehouses', 'warehouses.id', '=', 'stocks.warehouse_id')
-            ->get();
-
-        return StockResurce::collection($stock);
+            ->get());
     }
 }

@@ -9,9 +9,14 @@ use Illuminate\Http\Request;
 
 class DestroyController extends BaseController
 {
-    public function __invoke(Warehous $warehouse)
+    /**
+     * Удаление склада
+     * @param Warehous $warehouse
+     * @return bool
+     */
+    public function __invoke(Warehous $warehouse): bool
     {
         $this->service->destroy($warehouse);
-        return response([]);
+        return true;
     }
 }

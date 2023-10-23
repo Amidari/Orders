@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Services
 {
-
+    /**
+     * Сервис получения всех складов
+     * @return Collection
+     */
     public function index(): Collection
     {
-
         return Warehous::all();
     }
 
@@ -22,10 +24,8 @@ class Services
 
     public function store(array $data): bool
     {
-
         Warehous::firstOrCreate($data);
         return true;
-
     }
 
 
@@ -37,10 +37,8 @@ class Services
      */
     public function update(array $data, Warehous $warehouse): bool
     {
-
         $warehouse->update($data);
         return true;
-
     }
 
     /**

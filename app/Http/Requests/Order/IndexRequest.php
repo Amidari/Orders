@@ -29,9 +29,4 @@ class IndexRequest extends FormRequest
             'page' => 'required|integer',
         ];
     }
-
-//    protected function failedValidation(Validator $validator)
-//    {
-//        throw (new \Illuminate\Validation\ValidationException($validator))->errorBag($this->errorBag)->status(Response::HTTP_FORBIDDEN);
-//    }
 }

@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Order;
 
 
-use App\Http\Resources\Order\OrderShowResurce;
 use App\Models\Order;
 
 
 class ShowController extends BaseController
 {
-    public function __invoke(Order $order)
+    /**
+     * @param Order $order
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function __invoke(Order $order): \Illuminate\Http\JsonResponse
     {
-
-//        return OrderShowResurce::collection($this->service->show($order));
         return response()->json($this->service->show($order));
     }
 }

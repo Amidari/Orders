@@ -8,7 +8,11 @@ use App\Http\Resources\Warehouse\WarehouseResurce;
 
 class IndexController extends BaseController
 {
-    public function __invoke()
+    /**
+     * Получение всех складов
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function __invoke(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         return WarehouseResurce::collection($this->service->index());
     }
