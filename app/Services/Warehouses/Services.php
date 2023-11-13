@@ -2,7 +2,7 @@
 
 namespace App\Services\Warehouses;
 
-use App\Models\Warehous;
+use App\Models\Warehouse;
 use Illuminate\Database\Eloquent\Collection;
 
 class Services
@@ -13,7 +13,7 @@ class Services
      */
     public function index(): Collection
     {
-        return Warehous::all();
+        return Warehouse::all();
     }
 
     /**
@@ -24,18 +24,18 @@ class Services
 
     public function store(array $data): bool
     {
-        Warehous::firstOrCreate($data);
+        Warehouse::firstOrCreate($data);
         return true;
     }
 
 
     /**
      * Сервис изменения склада.
-     * @param Warehous $warehouse данные именяемого склада.
+     * @param Warehouse $warehouse данные именяемого склада.
      * @param array $data валидированные данные, максимум 255 символов.
      * @return bool
      */
-    public function update(array $data, Warehous $warehouse): bool
+    public function update(array $data, Warehouse $warehouse): bool
     {
         $warehouse->update($data);
         return true;
@@ -43,10 +43,10 @@ class Services
 
     /**
      * Сервис удаления склада.
-     * @param Warehous $warehouse данные удаляемого склада.
+     * @param Warehouse $warehouse данные удаляемого склада.
      * @return bool
      */
-    public function destroy(Warehous $warehouse): bool
+    public function destroy(Warehouse $warehouse): bool
     {
         $warehouse->delete();
         return true;

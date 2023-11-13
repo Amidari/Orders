@@ -142,6 +142,7 @@ export default {
             axios.get('/api/v1/warehouses')
                 .then(res => {
                     this.warehouses = res.data.data;
+                    console.log(res.data.data);
                 })
         },
         getOrder(page=1) {
@@ -155,7 +156,6 @@ export default {
                 .then(res => {
                     this.orders = res.data.data;
                     this.pagination = res.data.meta
-                    console.log(res);
                 })
         },
         completedOrder(id){

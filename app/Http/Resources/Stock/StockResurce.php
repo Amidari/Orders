@@ -19,6 +19,7 @@ class StockResurce extends JsonResource
             'product_id' => $this->product_id,
             'warehouse' => $this->warehouse,
             'stock' => $this->stock
+
         ];
     }
 }

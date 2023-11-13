@@ -22,7 +22,7 @@ class Order extends Model
 
     public function warehouse():BelongsTo
     {
-        return $this->belongsTo(Warehous::class);
+        return $this->belongsTo(Warehouse::class);
     }
 
     public function products():BelongsToMany

@@ -39,11 +39,11 @@
                 <th colspan="2"><a href="#" @click.prevent="stockProduct(null)" class="btn btn-info">Свернуть</a></th>
 
             </tr>
-            <template v-for="stock in stocks">
-            <tr :class="isStock(product.id)? '' : 'd-none'" v-if="product.id === stock.product_id" class="table-secondary">
+            <template v-for="warehouse in product.warehouse">
+            <tr :class="isStock(product.id)? '' : 'd-none'" class="table-secondary">
                 <th></th>
-                <td>{{ stock.warehouse }}</td>
-                <td colspan="3">{{ stock.stock }}</td>
+                <td>{{ warehouse.name }}</td>
+                <td colspan="3">{{ warehouse.stock }}</td>
             </tr>
             </template>
         </template>
@@ -72,21 +72,17 @@ export default {
 
     mounted() {
         this.getProduct()
-        this.getStock()
+
     },
     methods: {
         getProduct() {
             axios.get('api/v1/product')
                 .then(res => {
                     this.products = res.data.data;
+                    console.log(res);
                 })
         },
-        getStock(){
-          axios.get('api/v1/stocks')
-              .then(res=>{
-                  this.stocks = res.data.data
-              })
-        },
+
         updateProduct(id){
             this.editProductId = null;
             axios.post(`api/v1/product/${id}/update`, {name: this.name, price: this.price})

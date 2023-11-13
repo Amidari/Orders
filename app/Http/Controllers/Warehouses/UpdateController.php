@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Warehouses;
 
 use App\Http\Requests\Warehous\UpdateRequest;
-use App\Models\Warehous;
+use App\Models\Warehouse;
 
 
 class UpdateController extends BaseController
@@ -11,10 +11,10 @@ class UpdateController extends BaseController
     /**
      * Обновление склада
      * @param UpdateRequest $request
-     * @param Warehous $warehouse
+     * @param Warehouse $warehouse
      * @return bool
      */
-    public function __invoke(UpdateRequest $request, Warehous $warehouse):bool
+    public function __invoke(UpdateRequest $request, Warehouse $warehouse):bool
     {
         $data = $request->validated();
         return $this->service->update($data,$warehouse);

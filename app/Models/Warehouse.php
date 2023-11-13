@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Warehous extends Model
+class Warehouse extends Model
 {
     use HasFactory;
 
@@ -20,11 +20,6 @@ class Warehous extends Model
     public function order(): HasMany
     {
         return $this->hasMany(Order::class, 'warehouse_id', 'id');
-    }
-
-    public function product(): belongsToMany
-    {
-        return $this->belongsToMany(Stock::class, 'stocks');
     }
 
 }

@@ -7,25 +7,27 @@
     <div class="row ml-3">
         <h1 class="mt-3 ml-2">Карточка заказа</h1>
     </div>
-        <div class="w-25 ml-5">
-            <div class="mb-3">
+        <div class="row mt-4">
+            <div class="col-6">
                 <label for="index">Номер заказа</label>
                 <input type="text" class="form-control" id="index" v-model="orders.id" disabled>
             </div>
-            <div class="mb-3">
+            <div class="col-6">
                 <label for="customer">Клиент</label>
                 <input type="text" class="form-control" id="customer" v-model="orders.customer">
                 <a href="#" @click.prevent="refreshOrder(orders.customer)" class="btn btn-success mt-2">Изенить</a>
             </div>
-            <div class="mb-3">
+        </div>
+        <div class="row mt-4">
+            <div class="col-4">
                 <label for="created_at">Дата заказа</label>
                 <input type="text" class="form-control" id="created_at" v-model="orders.created_at" disabled>
             </div>
-            <div class="mb-3">
+            <div class="col-4">
                 <label for="completed_at">Дата завершения</label>
                 <input type="text" class="form-control" id="completed_at" v-model="orders.completed_at" disabled>
             </div>
-            <div class="mb-3">
+            <div class="col-4">
                 <label for="status">Статус</label>
                 <input type="text" class="form-control" id="status" v-model="orders.status" disabled>
             </div>
@@ -37,8 +39,8 @@
             <tr>
                 <th>Продукт</th>
                 <th>Количество</th>
-                <th>Остаток на складе</th>
-                <th>Удалить</th>
+                <th :class="orders.status !== 'active'? 'd-none' : ''">Остаток на складе</th>
+                <th :class="orders.status === 'completed'? 'd-none' : ''">Удалить</th>
 
             </tr>
             </thead>
@@ -49,7 +51,7 @@
                     <td>{{ product.name }}</td>
                     <td>{{ product.count }}</td>
                     <template v-for="value in orders.stocks" >
-                    <td v-if="product.id === value.product_id">{{value.stock}}</td>
+                    <td v-if="product.id === value.product_id" :class="orders.status !== 'active'? 'd-none' : ''">{{value.stock}}</td>
                     </template>
                     <td><a href="#" @click.prevent="deleteProduct(product.id, product.count)" class="btn btn-danger" :class="orders.status !== 'completed'? '' : 'd-none'">Удалить</a></td>
                 </tr>
